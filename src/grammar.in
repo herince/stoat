@@ -1,0 +1,108 @@
+%code requires
+{
+    #include <stdio.h>
+    #include <cstdio>
+    #include "../ast-types.h"
+
+    namespace stoat {
+        class Scanner;
+        class ParserContext;
+    }
+
+    class YYSTYPE;
+    class YYLTYPE;
+
+    #define YYDEBUG 1
+}
+
+%code top {
+    #include "../scanner.h"
+
+    #define yylex(scanner, ctx) scanner.get_next_token()
+
+    void stoat::Parser::error (std::string const& s) {
+        // fprintf (std::stderr, "%s\n", s);
+    }
+}
+
+%skeleton "lalr1.cc"
+
+%require "3.0"
+
+%defines
+%define api.value.type variant
+%define api.token.constructor
+%define api.parser.class { Parser }
+%define api.namespace { stoat }
+
+%lex-param { stoat::Scanner &scanner }
+%lex-param { stoat::ParserContext &ctx }
+%parse-param { stoat::Scanner &scanner }
+%parse-param { stoat::ParserContext &ctx }
+
+%start program
+
+%token <double> NUMBER;
+%token <std::string> IDENTIFIER;
+
+%token LEFT_PAREN;
+%token RIGHT_PAREN;
+%token SEMICOLON;
+%token DOUBLE;
+
+%nterm <ProgramASTNode*> program;
+%nterm <ExpressionASTNode*> expression;
+%nterm <StatementASTNode*> expression_statement;
+%nterm <StatementASTNode*> statement;
+
+%%
+
+program : statement {
+    printf("Parsed a program!\n");
+
+    ProgramASTNode* program = (ProgramASTNode*) calloc(1, sizeof(ProgramASTNode));
+    program->m_Statements.push_back($1);
+    $$ = program;
+}
+| statement program {
+    $$ = $2;
+    $$->m_Statements.push_back($1);
+};
+
+statement : expression_statement {
+    printf("Parsed a statement!\n");
+    $$ = $1;
+};
+
+/* Maybe something like that to describe lists of things: */
+/* %nterm std::vector<ASTStatementNode*> statements; */
+/* statements : statement {} | statements statement {} */
+
+expression_statement : SEMICOLON {
+    printf("Parsed an expression statement - ;!\n");
+
+    $$ = (StatementASTNode*) calloc(1, sizeof(StatementASTNode));
+}
+| expression {
+    printf("Parsed an expression statement %d!\n", $1->m_NumericValue);
+
+    StatementASTNode* statement = (StatementASTNode*) calloc(1, sizeof(StatementASTNode));
+    statement->m_Expression = $1;
+    $$ = statement;
+};
+
+expression : NUMBER {
+    printf("Parsed a number %.2f!\n", $1);
+
+    double n = $1;
+    ExpressionASTNode* expression = (ExpressionASTNode*) calloc(1, sizeof(ExpressionASTNode));
+    expression->m_NumericValue = n;
+    $$ = expression;
+}
+| LEFT_PAREN expression RIGHT_PAREN {
+    printf("Parsed a bracketed expression!\n");
+
+    ExpressionASTNode* expression = (ExpressionASTNode*) calloc(1, sizeof(ExpressionASTNode));
+    expression->m_NumericValue = $2->m_NumericValue;
+    $$ = expression;
+};
