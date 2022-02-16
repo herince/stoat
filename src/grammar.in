@@ -16,13 +16,14 @@
 }
 
 %code top {
+    #include <stdio.h>
     #include "../scanner.h"
     #include "../parser-context.h"
 
     #define yylex(scanner, ctx) scanner.get_next_token()
 
     void stoat::Parser::error (std::string const& s) {
-        // fprintf (std::stderr, "%s\n", s);
+        fprintf (stderr, "%s\n", s);
     }
 }
 

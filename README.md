@@ -6,11 +6,9 @@ A small animal name for a small compiler.
 
 #### TODO:
 
-- Stop the leaks <.<
-
 - [ ] Get it working for the most minimalistic version I can think of:
-    - [ ] Parse some tokens with Flex
-    - [ ] Use Bison to make AST
+    - [x] Parse some tokens with Flex
+    - [x] Use Bison to make AST
     - [ ] Try to make LLVM IR from the AST in the dumbest way possible
 - [ ] Easy way to build and run not by hand
 - [ ] Add operators

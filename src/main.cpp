@@ -6,8 +6,6 @@ int main()
     if (ctx)
     {
         ctx->Parse();
-        std::cout << "Yey!";
-
         delete ctx;
     }
     else
