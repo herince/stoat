@@ -23,7 +23,7 @@ struct StatementASTNode : public ASTNode
 {
     ~StatementASTNode()
     {
-        free(m_Expression);
+        delete m_Expression;
     }
     // We only have expression statements for now
     ExpressionASTNode* m_Expression;
@@ -35,9 +35,10 @@ struct ProgramASTNode : public ASTNode
     {
         for (auto stmt : m_Statements)
         {
-            free(stmt);
+            delete stmt;
         }
     }
+
     // For now a program will be what seems to be the definition
     // of compound statement in the grammar
     std::vector<StatementASTNode*> m_Statements;

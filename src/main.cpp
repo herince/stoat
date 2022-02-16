@@ -1,15 +1,19 @@
 #include "parser-context.h"
 
-// namespace stoat {
-//     Parser::symbol_type getNextToken(Scanner* scanner)
-//     {
-//         return scanner->get_next_token();
-//     }
-// }
-
 int main()
 {
-    stoat::ParserContext ctx;
-    ctx.parse();
+    auto ctx = stoat::ParserContext::GetContext();
+    if (ctx)
+    {
+        ctx->Parse();
+        std::cout << "Yey!";
+
+        delete ctx;
+    }
+    else
+    {
+        std::cerr << "No context. RIP ;-;";
+    }
+
     return 0;
 }

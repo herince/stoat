@@ -1,0 +1,24 @@
+program := function_declaration program
+           | function_definition program
+           | function_declaration
+           | function_definition
+
+declaration := type identifier
+declaration_list := declaration
+                  | declaration ',' declaration_list
+
+function_declaration := declaration '(' declaration_list ')'
+
+expressions := expression ';'
+             | expression ';' expressions
+
+function_definition := function_declaration '{' function_body '}'
+
+function_call := identifier '(' expression_list ')'
+
+expression := number_expression ';'
+            | declaration ';'
+            | function_call ';'
+
+expression_list := expression
+                 | expression ',' expression_list

@@ -17,6 +17,7 @@
 
 %code top {
     #include "../scanner.h"
+    #include "../parser-context.h"
 
     #define yylex(scanner, ctx) scanner.get_next_token()
 
@@ -60,8 +61,12 @@
 program : statement {
     printf("Parsed a program!\n");
 
-    ProgramASTNode* program = (ProgramASTNode*) calloc(1, sizeof(ProgramASTNode));
+    ProgramASTNode* program = new ProgramASTNode();
     program->m_Statements.push_back($1);
+
+    auto context = ParserContext::GetContext();
+    context->SetRoot(program);
+
     $$ = program;
 }
 | statement program {
@@ -81,12 +86,12 @@ statement : expression_statement {
 expression_statement : SEMICOLON {
     printf("Parsed an expression statement - ;!\n");
 
-    $$ = (StatementASTNode*) calloc(1, sizeof(StatementASTNode));
+    $$ = new StatementASTNode();
 }
 | expression {
     printf("Parsed an expression statement %d!\n", $1->m_NumericValue);
 
-    StatementASTNode* statement = (StatementASTNode*) calloc(1, sizeof(StatementASTNode));
+    StatementASTNode* statement = new StatementASTNode();
     statement->m_Expression = $1;
     $$ = statement;
 };
@@ -95,14 +100,16 @@ expression : NUMBER {
     printf("Parsed a number %.2f!\n", $1);
 
     double n = $1;
-    ExpressionASTNode* expression = (ExpressionASTNode*) calloc(1, sizeof(ExpressionASTNode));
+    ExpressionASTNode* expression = new ExpressionASTNode();
     expression->m_NumericValue = n;
     $$ = expression;
 }
 | LEFT_PAREN expression RIGHT_PAREN {
     printf("Parsed a bracketed expression!\n");
 
-    ExpressionASTNode* expression = (ExpressionASTNode*) calloc(1, sizeof(ExpressionASTNode));
+    ExpressionASTNode* expression = new ExpressionASTNode();
     expression->m_NumericValue = $2->m_NumericValue;
     $$ = expression;
+
+    delete $2;
 };

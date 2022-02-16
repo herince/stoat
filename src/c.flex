@@ -23,9 +23,6 @@ WHITESPACE [ \t\n]+
     return stoat::Parser::make_IDENTIFIER(yytext);
 }
 {NUMBER} {
-    printf(">>>>>>>>>>>>>>>>>>>>%s\n", yytext);
-    printf(">>>>>>>>>>>>>>>>>>>> as double - %.2f\n", std::stod(yytext));
-
     return stoat::Parser::make_NUMBER(std::stod(yytext));
 }
 
