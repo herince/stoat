@@ -1,6 +1,5 @@
 %code requires
 {
-    #include <stdio.h>
     #include <cstdio>
     #include "../ast-types.h"
 
@@ -66,7 +65,7 @@ program : statement {
     program->m_Statements.push_back($1);
 
     auto context = ParserContext::GetContext();
-    context->SetRoot(program);
+    context->SetASTRoot(program);
 
     $$ = program;
 }

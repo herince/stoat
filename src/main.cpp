@@ -6,6 +6,7 @@ int main()
     if (ctx)
     {
         ctx->Parse();
+        ctx->GetASTRoot()->CodeGen();
         delete ctx;
     }
     else

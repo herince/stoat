@@ -12,7 +12,11 @@ ParserContext* ParserContext::GetContext()
     return context;
 }
 
- void ParserContext::SetRoot(ProgramASTNode* root)
+ASTNode* ParserContext::GetASTRoot()
+{
+    return m_ASTRoot;
+}
+void ParserContext::SetASTRoot(ProgramASTNode* root)
 {
     m_ASTRoot = root;
 }
