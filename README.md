@@ -6,21 +6,21 @@ A small animal name for a small compiler.
 
 #### TODO:
 
-- [ ] Get it working for the most minimalistic version I can think of:
+- [x] Get it working for the most minimalistic version I can think of:
     - [x] Parse some tokens with Flex
     - [x] Use Bison to make AST
-    - [ ] Try to make LLVM IR from the AST in the dumbest way possible
-- [ ] Easy way to build and run not by hand
+    - [x] Try to make LLVM IR from the AST in the dumbest way possible
+- [ ] Add variables
 - [ ] Add operators
-- [ ] Add varible definitions and assignment expressions
-- [ ] Add controw flow statements
+- [ ] Add functions
+- [ ] Add control flow statements
 - [ ] Add strings and comments (they should be similar in some sense)
 - [ ] Add other C types
 
 #### Bonus levels:
+- [ ] Better build setup - cmake or something like that
 - [ ] Read includes?
-- [ ] Setup some automated way to test the code
-- [ ] Autmated way to test the compiler itself (make a script or something)
+- [ ] Tests
 - [ ] Print AST?
 
 Error handling? Error recovery?
