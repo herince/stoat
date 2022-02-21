@@ -15,10 +15,10 @@ WHITESPACE [ \t\n]+
 
 "(" { return stoat::Parser::make_LEFT_PAREN(); }
 ")" { return stoat::Parser::make_RIGHT_PAREN(); }
-";" { return stoat::Parser::make_SEMICOLON(); }
-"=" { return stoat::Parser::make_EQUAL_SIGN(); }
 "{" { return stoat::Parser::make_LEFT_BRACKET(); }
 "}" { return stoat::Parser::make_RIGHT_BRACKET(); }
+";" { return stoat::Parser::make_SEMICOLON(); }
+"=" { return stoat::Parser::make_EQUAL_SIGN(); }
 
 "double" { return stoat::Parser::make_DOUBLE(); }
 

@@ -43,8 +43,6 @@ struct CompoundStatementASTNode : public ASTNode
     ~CompoundStatementASTNode();
     virtual llvm::Value* CodeGen() override; 
 
-    // For now a program will be what seems to be the definition
-    // of compound statement in the grammar
     std::vector<StatementASTNode*> m_Statements;
 };
 

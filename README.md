@@ -6,6 +6,8 @@ A small animal name for a small compiler.
 
 #### TODO:
 
+[Fix leaks](https://image.emojisky.com/937/872937-middle.png)
+
 - [x] Get it working for the most minimalistic version I can think of:
     - [x] Parse some tokens with Flex
     - [x] Use Bison to make AST

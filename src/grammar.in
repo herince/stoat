@@ -66,7 +66,7 @@
 %%
 
 program : function_definition {
-    printf("Parsed a program!\n");
+    printf("Parsed a program!\n\n");
 
     ProgramASTNode* program = new ProgramASTNode();
     program->m_Definitions.push_back($1);
@@ -86,7 +86,6 @@ compound_statement : statement {
 
     CompoundStatementASTNode* compoundStatement = new CompoundStatementASTNode();
     compoundStatement->m_Statements.push_back($1);
-
     $$ = compoundStatement;
 }
 | statement compound_statement {

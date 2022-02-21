@@ -4,3 +4,7 @@ double aaa() {
 
     16
 }
+double b()
+{
+    5
+}
