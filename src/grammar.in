@@ -48,28 +48,48 @@
 
 %token LEFT_PAREN;
 %token RIGHT_PAREN;
+%token LEFT_BRACKET;
+%token RIGHT_BRACKET;
 %token SEMICOLON;
+%token EQUAL_SIGN;
 %token DOUBLE;
 
+%nterm <double> constant;
+%nterm <std::string> declarator;
 %nterm <ProgramASTNode*> program;
 %nterm <ExpressionASTNode*> expression;
 %nterm <StatementASTNode*> expression_statement;
 %nterm <StatementASTNode*> statement;
+%nterm <CompoundStatementASTNode*> compound_statement;
+%nterm <FunctionDefinitionASTNode*> function_definition;
 
 %%
 
-program : statement {
+program : function_definition {
     printf("Parsed a program!\n");
 
     ProgramASTNode* program = new ProgramASTNode();
-    program->m_Statements.push_back($1);
+    program->m_Definitions.push_back($1);
 
     auto context = ParserContext::GetContext();
     context->SetASTRoot(program);
 
     $$ = program;
 }
-| statement program {
+| function_definition program {
+    $$ = $2;
+    $$->m_Definitions.push_back($1);
+};
+
+compound_statement : statement {
+    printf("Parsed a compound statement!\n");
+
+    CompoundStatementASTNode* compoundStatement = new CompoundStatementASTNode();
+    compoundStatement->m_Statements.push_back($1);
+
+    $$ = compoundStatement;
+}
+| statement compound_statement {
     $$ = $2;
     $$->m_Statements.push_back($1);
 };
@@ -96,9 +116,7 @@ expression_statement : SEMICOLON {
     $$ = statement;
 };
 
-expression : NUMBER {
-    printf("Parsed a number %.2f!\n", $1);
-
+expression : constant {
     double n = $1;
     ExpressionASTNode* expression = new ExpressionASTNode();
     expression->m_NumericValue = n;
@@ -112,4 +130,28 @@ expression : NUMBER {
     $$ = expression;
 
     delete $2;
+};
+
+constant : NUMBER {
+    printf("Parsed a number %.2f!\n", $1);
+};
+
+type_specifier : DOUBLE {
+    printf("Parsed the 'double' keyword!\n");
+};
+
+declaration_specifiers : type_specifier {}
+| type_specifier declaration_specifiers {};
+
+declarator : IDENTIFIER {
+    $$ = $1;
+};
+
+function_definition : declaration_specifiers declarator LEFT_PAREN RIGHT_PAREN LEFT_BRACKET compound_statement RIGHT_BRACKET {
+    printf("Parsed the function '%s' definition!\n", $2.c_str());
+
+    FunctionDefinitionASTNode* function = new FunctionDefinitionASTNode();
+    function->m_Identifier = $2;
+    function->m_FunctionBody = $6;
+    $$ = function;
 };

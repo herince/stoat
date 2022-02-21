@@ -43,18 +43,44 @@ llvm::Value* StatementASTNode::CodeGen()
     return nullptr;
 };
 
-ProgramASTNode::~ProgramASTNode()
+CompoundStatementASTNode::~CompoundStatementASTNode()
 {
     for (auto stmt : m_Statements)
     {
         delete stmt;
     }
 }
-llvm::Value* ProgramASTNode::CodeGen()
+llvm::Value* CompoundStatementASTNode::CodeGen()
 {
     for (auto stmt : m_Statements)
     {
         stmt->CodeGen();
+    }
+    return nullptr;
+};
+
+FunctionDefinitionASTNode::~FunctionDefinitionASTNode()
+{
+    delete m_FunctionBody;
+}
+llvm::Value* FunctionDefinitionASTNode::CodeGen()
+{
+    m_FunctionBody->CodeGen();
+    return nullptr;
+};
+
+ProgramASTNode::~ProgramASTNode()
+{
+    for (auto def : m_Definitions)
+    {
+        delete def;
+    }
+}
+llvm::Value* ProgramASTNode::CodeGen()
+{
+    for (auto def : m_Definitions)
+    {
+        def->CodeGen();
     }
     return nullptr;
 };

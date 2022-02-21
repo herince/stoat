@@ -22,7 +22,8 @@ A small animal name for a small compiler.
 - [ ] Read includes?
 - [ ] Tests
 - [ ] Print AST?
+- [ ] How can I implement pointers? Should I do it?
+- [ ] Preprocessors?
 
 Error handling? Error recovery?
-How can I implement pointers? Should I do it?
 Anything else?

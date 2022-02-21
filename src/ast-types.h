@@ -38,14 +38,34 @@ struct StatementASTNode : public ASTNode
     ExpressionASTNode* m_Expression;
 };
 
-struct ProgramASTNode : public ASTNode
+struct CompoundStatementASTNode : public ASTNode
 {
-    ~ProgramASTNode();
+    ~CompoundStatementASTNode();
     virtual llvm::Value* CodeGen() override; 
 
     // For now a program will be what seems to be the definition
     // of compound statement in the grammar
     std::vector<StatementASTNode*> m_Statements;
+};
+
+struct FunctionDefinitionASTNode : public ASTNode
+{
+    ~FunctionDefinitionASTNode();
+    virtual llvm::Value* CodeGen() override; 
+
+    // All functions return doubles for now and we don't need to
+    // keep the return type
+    std::string m_Identifier;
+    CompoundStatementASTNode* m_FunctionBody;
+};
+
+struct ProgramASTNode : public ASTNode
+{
+    ~ProgramASTNode();
+    virtual llvm::Value* CodeGen() override; 
+
+    // For now a program is a list of function definitions
+    std::vector<FunctionDefinitionASTNode*> m_Definitions;
 };
 
 }
