@@ -53,11 +53,13 @@
 %token SEMICOLON;
 %token EQUAL_SIGN;
 %token DOUBLE;
+%token RETURN;
 
 %nterm <double> constant;
 %nterm <std::string> declarator;
 %nterm <ProgramASTNode*> program;
 %nterm <ExpressionASTNode*> expression;
+%nterm <StatementASTNode*> return_statement;
 %nterm <StatementASTNode*> expression_statement;
 %nterm <StatementASTNode*> statement;
 %nterm <CompoundStatementASTNode*> compound_statement;
@@ -81,7 +83,14 @@ program : function_definition {
     $$->m_Definitions.push_back($1);
 };
 
-compound_statement : statement {
+compound_statement : return_statement {
+    printf("Parsed a compound statement with return value!\n");
+
+    CompoundStatementASTNode* compoundStatement = new CompoundStatementASTNode();
+    compoundStatement->m_ReturnStatement = $1;
+    $$ = compoundStatement;
+}
+| statement {
     printf("Parsed a compound statement!\n");
 
     CompoundStatementASTNode* compoundStatement = new CompoundStatementASTNode();
@@ -98,16 +107,15 @@ statement : expression_statement {
     $$ = $1;
 };
 
-/* Maybe something like that to describe lists of things: */
-/* %nterm std::vector<ASTStatementNode*> statements; */
-/* statements : statement {} | statements statement {} */
+return_statement : RETURN expression SEMICOLON {
+    printf("Parsed a (return) jump statement!\n");
 
-expression_statement : SEMICOLON {
-    printf("Parsed an expression statement - ;!\n");
+    StatementASTNode* statement = new StatementASTNode();
+    statement->m_Expression = $2;
+    $$ = statement;
+};
 
-    $$ = new StatementASTNode();
-}
-| expression {
+expression_statement : expression SEMICOLON {
     printf("Parsed an expression statement %d!\n", $1->m_NumericValue);
 
     StatementASTNode* statement = new StatementASTNode();
@@ -116,6 +124,8 @@ expression_statement : SEMICOLON {
 };
 
 expression : constant {
+    printf("Parsed a constant!\n");
+
     double n = $1;
     ExpressionASTNode* expression = new ExpressionASTNode();
     expression->m_NumericValue = n;
@@ -133,6 +143,7 @@ expression : constant {
 
 constant : NUMBER {
     printf("Parsed a number %.2f!\n", $1);
+    $$ = $1;
 };
 
 type_specifier : DOUBLE {
@@ -146,7 +157,14 @@ declarator : IDENTIFIER {
     $$ = $1;
 };
 
-function_definition : declaration_specifiers declarator LEFT_PAREN RIGHT_PAREN LEFT_BRACKET compound_statement RIGHT_BRACKET {
+function_definition : declaration_specifiers declarator LEFT_PAREN RIGHT_PAREN LEFT_BRACKET RIGHT_BRACKET {
+    printf("Parsed the empty function '%s' definition!\n", $2.c_str());
+
+    FunctionDefinitionASTNode* function = new FunctionDefinitionASTNode();
+    function->m_Identifier = $2;
+    $$ = function;
+}
+| declaration_specifiers declarator LEFT_PAREN RIGHT_PAREN LEFT_BRACKET compound_statement RIGHT_BRACKET {
     printf("Parsed the function '%s' definition!\n", $2.c_str());
 
     FunctionDefinitionASTNode* function = new FunctionDefinitionASTNode();

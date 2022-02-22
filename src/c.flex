@@ -21,6 +21,7 @@ WHITESPACE [ \t\n]+
 "=" { return stoat::Parser::make_EQUAL_SIGN(); }
 
 "double" { return stoat::Parser::make_DOUBLE(); }
+"return" { return stoat::Parser::make_RETURN(); }
 
 {ID} {
     return stoat::Parser::make_IDENTIFIER(yytext);

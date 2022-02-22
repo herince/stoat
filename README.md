@@ -15,6 +15,12 @@ A small animal name for a small compiler.
 - [ ] Add variables
 - [ ] Add operators
 - [ ] Add functions
+    - [x] Support definition without arguments
+    - [x] Return things
+    - [ ] Codegen body correctly
+    - [ ] Add arguments
+    - [x] No return value / empty body
+    - [ ] Declarations
 - [ ] Add control flow statements
 - [ ] Add strings and comments (they should be similar in some sense)
 - [ ] Add other C types

@@ -21,15 +21,16 @@ void ParserContext::SetASTRoot(ProgramASTNode* root)
     m_ASTRoot = root;
 }
 
-ParserContext::ParserContext() : m_Parser(m_Scanner, *this)
-{
+ParserContext::ParserContext()
+    : m_Parser(m_Scanner, *this)
+
     // Open a new context and module
-    m_LLVMContext = std::make_unique<llvm::LLVMContext>();
-    m_Module = std::make_unique<llvm::Module>("some module", *m_LLVMContext);
+    , m_LLVMContext(std::make_unique<llvm::LLVMContext>())
+    , m_Module(std::make_unique<llvm::Module>("some module", *m_LLVMContext))
 
     // Create a new builder for the module
-    // m_Builder = std::make_unique<IRBuilder<>>(*m_LLVMContext);
-}
+    , m_Builder(*m_LLVMContext)
+{}
 ParserContext::~ParserContext()
 {
     if (m_ASTRoot)

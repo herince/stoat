@@ -35,7 +35,7 @@ struct StatementASTNode : public ASTNode
     virtual llvm::Value* CodeGen() override; 
 
     // We only have expression statements for now
-    ExpressionASTNode* m_Expression;
+    ExpressionASTNode* m_Expression = nullptr;
 };
 
 struct CompoundStatementASTNode : public ASTNode
@@ -44,6 +44,7 @@ struct CompoundStatementASTNode : public ASTNode
     virtual llvm::Value* CodeGen() override; 
 
     std::vector<StatementASTNode*> m_Statements;
+    StatementASTNode* m_ReturnStatement = nullptr;
 };
 
 struct FunctionDefinitionASTNode : public ASTNode
@@ -54,7 +55,7 @@ struct FunctionDefinitionASTNode : public ASTNode
     // All functions return doubles for now and we don't need to
     // keep the return type
     std::string m_Identifier;
-    CompoundStatementASTNode* m_FunctionBody;
+    CompoundStatementASTNode* m_FunctionBody = nullptr;
 };
 
 struct ProgramASTNode : public ASTNode

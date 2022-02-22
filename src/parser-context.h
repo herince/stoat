@@ -26,7 +26,7 @@ public:
     
     // TODO: hide
     std::unique_ptr<llvm::LLVMContext> m_LLVMContext;
-    // llvm::IRBuilder<> m_Builder;
+    llvm::IRBuilder<> m_Builder;
     std::unique_ptr<llvm::Module> m_Module;
 
     // Not sure if this should be here ??

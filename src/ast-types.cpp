@@ -38,6 +38,8 @@ llvm::Value* StatementASTNode::CodeGen()
             value->print(llvm::errs());
             printf("\n");
         }
+
+        return value;
     }
     return nullptr;
 };
@@ -48,13 +50,22 @@ CompoundStatementASTNode::~CompoundStatementASTNode()
     {
         delete stmt;
     }
+
+    delete m_ReturnStatement;
 }
 llvm::Value* CompoundStatementASTNode::CodeGen()
 {
+    // TODO: it's wrong, fix it
     for (auto stmt : m_Statements)
     {
         stmt->CodeGen();
     }
+
+    if (m_ReturnStatement)
+    {
+        return m_ReturnStatement->CodeGen();
+    }
+
     return nullptr;
 };
 
@@ -67,6 +78,7 @@ llvm::Value* FunctionDefinitionASTNode::CodeGen()
     auto parserContext = ParserContext::GetContext();
     auto& llvmContext = parserContext->m_LLVMContext;
     auto& llvmModule = parserContext->m_Module;
+    auto& llvmBuilder = parserContext->m_Builder;
     llvm::Function* function = llvmModule->getFunction(m_Identifier);
 
     if (function)
@@ -77,7 +89,7 @@ llvm::Value* FunctionDefinitionASTNode::CodeGen()
     }
 
     std::vector<llvm::Type*> args;
-    llvm::FunctionType* functionType = llvm::FunctionType::get(
+    auto functionType = llvm::FunctionType::get(
         llvm::Type::getDoubleTy(*llvmContext), args, false);
     function = llvm::Function::Create(
         functionType,
@@ -85,8 +97,19 @@ llvm::Value* FunctionDefinitionASTNode::CodeGen()
         m_Identifier,
         llvmModule.get());
 
-    // TODO: remove and actually generate IR for a function body
-    m_FunctionBody->CodeGen();
+    const auto blockName = llvm::Twine(m_Identifier.c_str());
+    llvm::BasicBlock* block = llvm::BasicBlock::Create(
+        *llvmContext,
+        blockName,
+        function);
+    llvmBuilder.SetInsertPoint(block);
+
+    if (m_FunctionBody)
+    {
+        if (auto returnValue = m_FunctionBody->CodeGen()) {
+            llvmBuilder.CreateRet(returnValue);
+        }
+    }
 
     return function;
 };
