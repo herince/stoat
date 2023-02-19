@@ -1,7 +1,12 @@
 %code requires
 {
     #include <cstdio>
-    #include "../ast-types.h"
+    #include "../ast-types/ast-node.h"
+    #include "../ast-types/expression.h"
+    #include "../ast-types/statement.h"
+    #include "../ast-types/compound-statement.h"
+    #include "../ast-types/function.h"
+    #include "../ast-types/program.h"
 
     namespace stoat {
         class Scanner;

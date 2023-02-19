@@ -5,7 +5,7 @@
 #include "llvm/IR/LLVMContext.h"
 
 #include "scanner.h"
-#include "ast-types.h"
+#include "ast-types/program.h"
 
 namespace stoat
 {
