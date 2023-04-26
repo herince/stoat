@@ -17,10 +17,9 @@ CompoundStatementASTNode::~CompoundStatementASTNode()
 }
 llvm::Value* CompoundStatementASTNode::CodeGen()
 {
-    // TODO: it's wrong, fix it
-    for (auto stmt : m_Statements)
+    for (int i = m_Statements.size() - 1; i >= 0; --i)
     {
-        stmt->CodeGen();
+        m_Statements[i]->CodeGen();
     }
 
     if (m_ReturnStatement)

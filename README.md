@@ -1,8 +1,8 @@
 #### stoat
 A small compiler for some subset of C using Bison, Flex and LLVM.
 
-#### WiP:
-[Fix leaks](https://image.emojisky.com/937/872937-middle.png)
+<details>
+<summary>Work in progress</summary>
 
 - [x] Get it working for the most minimalistic version I can think of:
     - [x] Parse some tokens with Flex
@@ -20,16 +20,23 @@ A small compiler for some subset of C using Bison, Flex and LLVM.
 - [ ] Add control flow statements
 - [ ] Add strings and comments (they should be similar in some sense)
 - [ ] Add other C types
+</details>
 
-#### Want to do at some point:
+<details>
+<summary>Want to do at some point</summary>
+
 - [ ] Generate ASM instructions instead of calling the LLVM API
 - [ ] Read includes?
 - [ ] How can I implement pointers? Should I do it?
+</details>
 
-#### QoL things:
+<details>
+<summary>Quality of life things</summary>
+
 - [ ] Better build setup - cmake or something like that
 - [ ] Tests
 - [ ] Print AST?
 
-Error handling? Error recovery?
-Anything else?
+- Error handling? Error recovery?
+- Anything else?
+</details>

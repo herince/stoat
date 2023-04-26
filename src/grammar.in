@@ -121,7 +121,7 @@ return_statement : RETURN expression SEMICOLON {
 };
 
 expression_statement : expression SEMICOLON {
-    printf("Parsed an expression statement %d!\n", $1->m_NumericValue);
+    printf("Parsed an expression statement %.2f!\n", $1->m_NumericValue);
 
     StatementASTNode* statement = new StatementASTNode();
     statement->m_Expression = $1;
@@ -129,11 +129,10 @@ expression_statement : expression SEMICOLON {
 };
 
 expression : constant {
-    printf("Parsed a constant!\n");
+    printf("Parsed a constant - %.2f!\n", $1);
 
-    double n = $1;
     ExpressionASTNode* expression = new ExpressionASTNode();
-    expression->m_NumericValue = n;
+    expression->m_NumericValue = $1;
     $$ = expression;
 }
 | LEFT_PAREN expression RIGHT_PAREN {

@@ -23,13 +23,12 @@ public:
     friend class Scanner;
 
     static ParserContext* GetContext();
-    
-    // TODO: hide
-    std::unique_ptr<llvm::LLVMContext> m_LLVMContext;
-    llvm::IRBuilder<> m_Builder;
-    std::unique_ptr<llvm::Module> m_Module;
+    static void FreeContext();
 
-    // Not sure if this should be here ??
+    // todo: should these be here?
+    llvm::IRBuilder<> m_Builder;
+    std::unique_ptr<llvm::LLVMContext> m_LLVMContext;
+    std::unique_ptr<llvm::Module> m_Module;
     std::map<std::string, llvm::Value*> m_NamedValues;
 
 private:
@@ -39,7 +38,7 @@ private:
     Parser m_Parser;
     ProgramASTNode* m_ASTRoot;
 
-    static ParserContext* context;
+    static ParserContext* Context;
 };
 
 }

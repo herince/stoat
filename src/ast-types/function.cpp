@@ -42,13 +42,20 @@ llvm::Value* FunctionDefinitionASTNode::CodeGen()
         function);
     llvmBuilder.SetInsertPoint(block);
 
+    // parserContext->m_NamedValues.clear();
+    // for (auto& arg : function->args())
+    // {
+    //     parserContext->m_NamedValues[std::string(arg.getName())] = &arg;
+    // }
+
     if (m_FunctionBody)
     {
         if (auto returnValue = m_FunctionBody->CodeGen()) {
-            llvmBuilder.CreateRet(returnValue);
+            // llvmBuilder.CreateRet(returnValue);
+            return function;
         }
     }
 
-    return function;
+    return nullptr;  
 };
 }

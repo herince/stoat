@@ -7,6 +7,14 @@
 
 namespace stoat
 {
+ProgramASTNode::~ProgramASTNode()
+{
+    for (auto def : m_Definitions)
+    {
+        delete def;
+    }
+}
+
 llvm::Value* ProgramASTNode::CodeGen()
 {
     for (auto def : m_Definitions)
@@ -15,7 +23,6 @@ llvm::Value* ProgramASTNode::CodeGen()
         if (value)
         {
             // value->print(llvm::errs());
-            printf("\n");
         }
     }
     return nullptr;

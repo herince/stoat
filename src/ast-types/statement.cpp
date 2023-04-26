@@ -18,11 +18,10 @@ llvm::Value* StatementASTNode::CodeGen()
         if (value)
         {
             // value->print(llvm::errs());
-            printf("\n");
+            return value;
         }
-
-        return value;
     }
+
     return nullptr;
 };
 }

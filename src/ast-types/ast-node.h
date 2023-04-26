@@ -14,6 +14,6 @@ struct ASTNode
     void PrintError(const char* errorMessage);
 
     // Print in .dot format and use graphviz to visualize the AST
-    virtual void PrintNode(std::ostream& o); // = 0;
+    // virtual void PrintNode(std::ostream& o); // = 0;
 };
 }
