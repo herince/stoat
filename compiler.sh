@@ -8,6 +8,7 @@ echo "Generate lexer..."
 flex -d -o src/generated/c-lexer-generated.cpp src/c.flex
 
 echo "Compile the compiler..."
+# g++ -D DEBUG_PARSING -O3 src/generated/*.cpp src/*.cpp src/ast-types/*.cpp `llvm-config --system-libs --cppflags --ldflags --libs core` -o out/compiler
 g++ -O3 src/generated/*.cpp src/*.cpp src/ast-types/*.cpp `llvm-config --system-libs --cppflags --ldflags --libs core` -o out/compiler
 
 echo "Generate LLVM IR..."

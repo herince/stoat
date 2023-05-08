@@ -14,12 +14,7 @@ llvm::Value* StatementASTNode::CodeGen()
 {
     if (m_Expression)
     {
-        auto value = m_Expression->CodeGen();
-        if (value)
-        {
-            // value->print(llvm::errs());
-            return value;
-        }
+        return m_Expression->CodeGen();
     }
 
     return nullptr;

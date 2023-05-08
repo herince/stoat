@@ -17,13 +17,9 @@ ProgramASTNode::~ProgramASTNode()
 
 llvm::Value* ProgramASTNode::CodeGen()
 {
-    for (auto def : m_Definitions)
+    for (int i = m_Definitions.size() - 1; i >= 0; --i)
     {
-        auto value = def->CodeGen();
-        if (value)
-        {
-            // value->print(llvm::errs());
-        }
+        m_Definitions[i]->CodeGen();
     }
     return nullptr;
 };

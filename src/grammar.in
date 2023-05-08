@@ -73,7 +73,9 @@
 %%
 
 program : function_definition {
+#if defined(DEBUG_PARSING)
     printf("Parsed a program!\n\n");
+#endif
 
     ProgramASTNode* program = new ProgramASTNode();
     program->m_Definitions.push_back($1);
@@ -89,14 +91,18 @@ program : function_definition {
 };
 
 compound_statement : return_statement {
+#if defined(DEBUG_PARSING)
     printf("Parsed a compound statement with return value!\n");
+#endif
 
     CompoundStatementASTNode* compoundStatement = new CompoundStatementASTNode();
     compoundStatement->m_ReturnStatement = $1;
     $$ = compoundStatement;
 }
 | statement {
+#if defined(DEBUG_PARSING)
     printf("Parsed a compound statement!\n");
+#endif
 
     CompoundStatementASTNode* compoundStatement = new CompoundStatementASTNode();
     compoundStatement->m_Statements.push_back($1);
@@ -108,12 +114,17 @@ compound_statement : return_statement {
 };
 
 statement : expression_statement {
+#if defined(DEBUG_PARSING)
     printf("Parsed a statement!\n");
+#endif
+
     $$ = $1;
 };
 
 return_statement : RETURN expression SEMICOLON {
+#if defined(DEBUG_PARSING)
     printf("Parsed a (return) jump statement!\n");
+#endif
 
     StatementASTNode* statement = new StatementASTNode();
     statement->m_Expression = $2;
@@ -121,7 +132,9 @@ return_statement : RETURN expression SEMICOLON {
 };
 
 expression_statement : expression SEMICOLON {
+#if defined(DEBUG_PARSING)
     printf("Parsed an expression statement %.2f!\n", $1->m_NumericValue);
+#endif
 
     StatementASTNode* statement = new StatementASTNode();
     statement->m_Expression = $1;
@@ -129,14 +142,18 @@ expression_statement : expression SEMICOLON {
 };
 
 expression : constant {
+#if defined(DEBUG_PARSING)
     printf("Parsed a constant - %.2f!\n", $1);
+#endif
 
     ExpressionASTNode* expression = new ExpressionASTNode();
     expression->m_NumericValue = $1;
     $$ = expression;
 }
 | LEFT_PAREN expression RIGHT_PAREN {
+#if defined(DEBUG_PARSING)
     printf("Parsed a bracketed expression!\n");
+#endif
 
     ExpressionASTNode* expression = new ExpressionASTNode();
     expression->m_NumericValue = $2->m_NumericValue;
@@ -146,12 +163,17 @@ expression : constant {
 };
 
 constant : NUMBER {
+#if defined(DEBUG_PARSING)
     printf("Parsed a number %.2f!\n", $1);
+#endif
+
     $$ = $1;
 };
 
 type_specifier : DOUBLE {
+#if defined(DEBUG_PARSING)
     printf("Parsed the 'double' keyword!\n");
+#endif
 };
 
 declaration_specifiers : type_specifier {}
@@ -162,14 +184,18 @@ declarator : IDENTIFIER {
 };
 
 function_definition : declaration_specifiers declarator LEFT_PAREN RIGHT_PAREN LEFT_BRACKET RIGHT_BRACKET {
+#if defined(DEBUG_PARSING)
     printf("Parsed the empty function '%s' definition!\n", $2.c_str());
+#endif
 
     FunctionDefinitionASTNode* function = new FunctionDefinitionASTNode();
     function->m_Identifier = $2;
     $$ = function;
 }
 | declaration_specifiers declarator LEFT_PAREN RIGHT_PAREN LEFT_BRACKET compound_statement RIGHT_BRACKET {
+#if defined(DEBUG_PARSING)
     printf("Parsed the function '%s' definition!\n", $2.c_str());
+#endif
 
     FunctionDefinitionASTNode* function = new FunctionDefinitionASTNode();
     function->m_Identifier = $2;

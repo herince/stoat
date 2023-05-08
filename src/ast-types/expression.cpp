@@ -9,8 +9,10 @@ namespace stoat
 {
 llvm::Value* ExpressionASTNode::CodeGen()
 {
+    using namespace llvm;
+
     auto parserContext = ParserContext::GetContext();
     auto& llvmContext = parserContext->m_LLVMContext;
-    return llvm::ConstantFP::get(*llvmContext, llvm::APFloat(m_NumericValue));
+    return ConstantFP::get(*llvmContext, APFloat(m_NumericValue));
 };
 }

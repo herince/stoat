@@ -13,11 +13,13 @@ FunctionDefinitionASTNode::~FunctionDefinitionASTNode()
 }
 llvm::Value* FunctionDefinitionASTNode::CodeGen()
 {
+    using namespace llvm;
+
     auto parserContext = ParserContext::GetContext();
     auto& llvmContext = parserContext->m_LLVMContext;
     auto& llvmModule = parserContext->m_Module;
     auto& llvmBuilder = parserContext->m_Builder;
-    llvm::Function* function = llvmModule->getFunction(m_Identifier);
+    Function* function = llvmModule->getFunction(m_Identifier);
 
     if (function)
     {
@@ -26,21 +28,20 @@ llvm::Value* FunctionDefinitionASTNode::CodeGen()
         return nullptr;
     }
 
-    std::vector<llvm::Type*> args;
-    auto functionType = llvm::FunctionType::get(
-        llvm::Type::getDoubleTy(*llvmContext), args, false);
-    function = llvm::Function::Create(
+    std::vector<Type*> args;
+    auto functionType = FunctionType::get(
+        Type::getDoubleTy(*llvmContext), args, false);
+    function = Function::Create(
         functionType,
-        llvm::Function::ExternalLinkage,
+        Function::ExternalLinkage,
         m_Identifier,
         llvmModule.get());
 
-    const auto blockName = llvm::Twine(m_Identifier.c_str());
-    llvm::BasicBlock* block = llvm::BasicBlock::Create(
+    BasicBlock* block = BasicBlock::Create(
         *llvmContext,
-        blockName,
+        m_Identifier.c_str(),
         function);
-    llvmBuilder.SetInsertPoint(block);
+    llvm::IRBuilder<> funcBuilder(block);
 
     // parserContext->m_NamedValues.clear();
     // for (auto& arg : function->args())
@@ -51,11 +52,13 @@ llvm::Value* FunctionDefinitionASTNode::CodeGen()
     if (m_FunctionBody)
     {
         if (auto returnValue = m_FunctionBody->CodeGen()) {
-            // llvmBuilder.CreateRet(returnValue);
+            funcBuilder.CreateRet(returnValue);
             return function;
         }
     }
 
+    // Verify that typed functions always return, otherwise:
+    // f->eraseFromParent();
     return nullptr;  
 };
 }
