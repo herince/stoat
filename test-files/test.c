@@ -10,3 +10,10 @@ double b()
 }
 
 double c () {}
+
+double dddd()
+{
+    return 5;
+}
+
+double eeeeee () { return 17.99; }

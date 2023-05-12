@@ -12,6 +12,7 @@ int main()
         std::error_code ec;
         llvm::raw_fd_ostream rfdo("out/test.ll", ec);
         // check ec ??
+
         ctx->m_Module->print(rfdo, nullptr);
     }
     else

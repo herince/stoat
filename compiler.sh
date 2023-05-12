@@ -16,9 +16,13 @@ echo "Generate LLVM IR..."
 # valgrind --track-origins=yes ./out/compiler < test-files/test.c
 # valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./out/compiler < test-files/test.c
 
-# echo "Generate binary (from .ll)..."
-# llc -filetype=obj out/test.ll -o out/test
+echo "Generate binary (from .ll)..."
+llc -filetype=obj out/test.ll -o out/test
 # ./out/test
 
 # echo "Generate assembly..."
 # llc -filetype=asm out/test.ll -o out/test.s
+
+echo ""
+echo "Valid symbols in the executable:"
+nm -g out/test

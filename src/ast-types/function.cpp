@@ -58,7 +58,7 @@ llvm::Value* FunctionDefinitionASTNode::CodeGen()
     }
 
     // Verify that typed functions always return, otherwise:
-    // f->eraseFromParent();
+    function->eraseFromParent();
     return nullptr;  
 };
 }
