@@ -15,18 +15,9 @@ CompoundStatementASTNode::~CompoundStatementASTNode()
 
     delete m_ReturnStatement;
 }
-llvm::Value* CompoundStatementASTNode::CodeGen()
+
+void CompoundStatementASTNode::Accept(ASTVisitor *visitor) const
 {
-    for (int i = m_Statements.size() - 1; i >= 0; --i)
-    {
-        m_Statements[i]->CodeGen();
-    }
-
-    if (m_ReturnStatement)
-    {
-        return m_ReturnStatement->CodeGen();
-    }
-
-    return nullptr;
-};
+    visitor->VisitCompoundStatement(this);
+}
 }

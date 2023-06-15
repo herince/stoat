@@ -10,13 +10,8 @@ StatementASTNode::~StatementASTNode()
 {
     delete m_Expression;
 }
-llvm::Value* StatementASTNode::CodeGen()
+void StatementASTNode::Accept(ASTVisitor *visitor) const
 {
-    if (m_Expression)
-    {
-        return m_Expression->CodeGen();
-    }
-
-    return nullptr;
-};
+    visitor->VisitStatement(this);
+}
 }

@@ -7,12 +7,8 @@
 
 namespace stoat
 {
-llvm::Value* ExpressionASTNode::CodeGen()
+void ExpressionASTNode::Accept(ASTVisitor *visitor) const
 {
-    using namespace llvm;
-
-    auto parserContext = ParserContext::GetContext();
-    auto& llvmContext = parserContext->m_LLVMContext;
-    return ConstantFP::get(*llvmContext, APFloat(m_NumericValue));
-};
+    visitor->VisitExpression(this);
+}
 }

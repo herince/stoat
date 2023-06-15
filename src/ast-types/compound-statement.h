@@ -11,7 +11,7 @@ struct CompoundStatementASTNode : public ASTNode
 {
     ~CompoundStatementASTNode();
 
-    virtual llvm::Value* CodeGen() override; 
+    virtual void Accept(ASTVisitor *visitor) const override;
 
     std::vector<StatementASTNode*> m_Statements;
     StatementASTNode* m_ReturnStatement = nullptr;

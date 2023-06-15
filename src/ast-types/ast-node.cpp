@@ -7,6 +7,7 @@
 namespace stoat
 {
 ASTNode::~ASTNode() {}
+
 void ASTNode::PrintError(const char* errorMessage)
 {
     fprintf(stderr, errorMessage);

@@ -15,7 +15,7 @@ class ParserContext
 public:
     ~ParserContext();
 
-    ASTNode* GetASTRoot();
+    ProgramASTNode* GetASTRoot();
     void SetASTRoot(ProgramASTNode* root);
     int Parse();
 

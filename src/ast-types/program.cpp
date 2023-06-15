@@ -15,12 +15,8 @@ ProgramASTNode::~ProgramASTNode()
     }
 }
 
-llvm::Value* ProgramASTNode::CodeGen()
+void ProgramASTNode::Accept(ASTVisitor *visitor) const
 {
-    for (int i = m_Definitions.size() - 1; i >= 0; --i)
-    {
-        m_Definitions[i]->CodeGen();
-    }
-    return nullptr;
-};
+    visitor->VisitProgram(this);
+}
 }

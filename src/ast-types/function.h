@@ -9,7 +9,7 @@ struct FunctionDefinitionASTNode : public ASTNode
 {
     ~FunctionDefinitionASTNode();
 
-    virtual llvm::Value* CodeGen() override; 
+    virtual void Accept(ASTVisitor *visitor) const override;
 
     // All functions return doubles for now and we don't need to
     // keep the return type

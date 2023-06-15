@@ -1,7 +1,6 @@
 #pragma once
 
-#include "llvm/IR/Type.h"
-#include "llvm/IR/DerivedTypes.h"
+#include "../ast-visitors/ast-visitor.h"
 
 namespace stoat
 {
@@ -9,8 +8,8 @@ struct ASTNode
 {
     virtual ~ASTNode();
 
-    // LLVM IR
-    virtual llvm::Value* CodeGen() = 0;
+    virtual void Accept(ASTVisitor *visitor) const = 0;
+
     void PrintError(const char* errorMessage);
 
     // Print in .dot format and use graphviz to visualize the AST

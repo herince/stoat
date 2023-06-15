@@ -11,7 +11,7 @@ struct ProgramASTNode : public ASTNode
 {
     ~ProgramASTNode();
 
-    virtual llvm::Value* CodeGen() override; 
+    virtual void Accept(ASTVisitor *visitor) const override;
 
     // For now a program is a list of function definitions
     std::vector<FunctionDefinitionASTNode*> m_Definitions;

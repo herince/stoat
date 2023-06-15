@@ -1,4 +1,5 @@
 #include "parser-context.h"
+#include "ast-visitors/llvm-ir-visitor.h"
 #include "llvm/Support/raw_os_ostream.h"
 
 int main()
@@ -7,13 +8,17 @@ int main()
     if (ctx)
     {
         ctx->Parse();
-        ctx->GetASTRoot()->CodeGen();
+
+        auto v = new stoat::LLVMIRVisitor();
+        v->VisitProgram(ctx->GetASTRoot());
 
         std::error_code ec;
         llvm::raw_fd_ostream rfdo("out/test.ll", ec);
         // check ec ??
 
         ctx->m_Module->print(rfdo, nullptr);
+
+        delete v;
     }
     else
     {

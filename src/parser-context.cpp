@@ -21,7 +21,7 @@ void ParserContext::FreeContext()
     }
 }
 
-ASTNode* ParserContext::GetASTRoot()
+ProgramASTNode* ParserContext::GetASTRoot()
 {
     return m_ASTRoot;
 }

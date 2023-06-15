@@ -9,7 +9,7 @@ struct StatementASTNode : public ASTNode
 {
     ~StatementASTNode();
 
-    virtual llvm::Value* CodeGen() override; 
+    virtual void Accept(ASTVisitor *visitor) const override;
 
     // We only have expression statements for now
     ExpressionASTNode* m_Expression = nullptr;
